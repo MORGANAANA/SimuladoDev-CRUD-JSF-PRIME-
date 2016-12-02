@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="templates/padraoInterno.xhtml">
+        <ui:define name="titulo">
+            Cadastro Clientes
+        </ui:define>
+        <ui:define name="conteudo">
+            <p:growl id="mensagens"/>
+            <h:form id="formListaClientes">
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton icon="ui-icon-plusthick" value="Novo Cliente" update=":formEditarCliente" actionListener="#{clienteBean.novoCliente()}" oncomplete="PF('dlgEditarCliente').show();"/>
+                    </f:facet>
+                </p:toolbar>
+                <p:dataTable id="tabListaCliente" value="#{autorBean.listaAutores}" var="autor" paginator="true" rows="10">
+                    <p:column headerText="ID" sortBy="#{autor.id}" width="90">
+                        #{autor.id}
+                    </p:column>
+                    <p:column headerText="Primeiro Nome" sortBy="#{autor.primeiroNome}">
+                        #{autor.primeiroNome}
+                    </p:column>
+                    <p:column headerText="Sobrenome" sortBy="#{autor.sobrenome}">
+                        #{autor.sobrenome}
+                    </p:column>
+                    <p:column width="135">
+                        <p:commandButton icon="ui-icon-pencil" update=":formEditarAutor" actionListener="#{autorBean.carregar(autor.id)}" oncomplete="PF('dlgEditarAutor').show();"/>
+                        <p:commandButton icon="ui-icon-trash" update="tabListaAutores,:mensagens" actionListener="#{autorBean.remover(autor)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+        <ui:define name="dialogs">
+            <p:dialog hideEffect="explode" header="Editar Autor" modal="true" widgetVar="dlgEditarAutor" resizable="false">
+                <h:form id="formEditarAutor">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="txtPrimeiroNome" value="Primeiro Nome: "/>
+                        <p:inputText id="txtPrimeiroNome" label="Primeiro Nome" maxlength="100" size="60" value="#{autorBean.autor.primeiroNome}" required="true"/>
+                        <p:outputLabel for="txtPrimeiroNome" value="Sobrenome: "/>
+                        <p:inputText id="txtSobrenome" label="Sobrenome" maxlength="100" size="60" value="#{autorBean.autor.sobrenome}" required="true"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Salvar" update=":formListaAutores:tabListaAutores,:mensagens" action="#{autorBean.salvar()}" oncomplete="PF('dlgEditarAutor').hide();"/>
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+
