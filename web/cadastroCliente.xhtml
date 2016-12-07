@@ -17,35 +17,28 @@
                         <p:commandButton icon="ui-icon-plusthick" value="Novo Cliente" update=":formEditarCliente" actionListener="#{clienteBean.novoCliente()}" oncomplete="PF('dlgEditarCliente').show();"/>
                     </f:facet>
                 </p:toolbar>
-                <p:dataTable id="tabListaCliente" value="#{clienteBean.listaCliente}" var="autor" paginator="true" rows="10">
+                
+                <p:dataTable id="tabListaCliente" value= "#{clienteBean.listaCliente} " var="cliente" paginator="true" rows="10">
                   
                     <p:column headerText="ID" sortBy="#{cliente.codigo}" width="90">
-                        #{cliente.codigo}                        
-                        <p:column headerText="Nome " sortBy="#{cliente.nome}">
-                            #{cliente.nome}
+                        #{cliente.codigo}                      
+                        <p:column headerText="CPF " sortBy="#{cliente.cpf}">
+                            #{cliente.cpf}
                         </p:column>
                     </p:column>
                     
-                    <p:column headerText="CPF" sortBy="#{cliente.cpf}">
-                        #{cliente.cpf}
+                    <p:column headerText="Telefone" sortBy="#{cliente.telefone}">
+                        #{cliente.telefone}
                     </p:column>
-                    
-                      <p:column headerText="Telefone" sortBy="#{cliente.telefone}">
-                       #{cliente.telefone}
-                    </p:column>
-                    
-                    <p:column headerText="Endereço" sortBy="#{cliente.endereco}">
-                       #{cliente.endereco}
-                    </p:column>
-                    
+                   
                     <p:column width="135">
-                        <p:commandButton icon="ui-icon-pencil" update=":formEditarCliente" actionListener="#{clienteBean.carregar(cliente.codigo}"  oncomplete="PF('dlgEditarCliente').show();"/>
-                        <p:commandButton icon="ui-icon-trash" update="tabListaCliente,:mensagens" actionListener="#{clienteBean.remover(cliente)}"/>
+                        <p:commandButton icon="ui-icon-pencil" update=":formEditarCliente" actionListener="#{clienteBean.cliente.codigo}" oncomplete="PF('dlgEditarCliente').show();"/>
+                        <p:commandButton icon="ui-icon-trash" update="tabListaCliente,:mensagens" actionListener="#{ClienteBean.remover(cliente)}"/>
                     </p:column>
                 </p:dataTable>
             </h:form>
         </ui:define>
-        <ui:define name="dialogs">
+       <ui:define name="dialogs">
             <p:dialog hideEffect="explode" header="EditarCliente" modal="true" widgetVar="dlgEditarCliente" resizable="false">
                 <h:form id="formEditarCliente">
                     <h:panelGrid columns="2">

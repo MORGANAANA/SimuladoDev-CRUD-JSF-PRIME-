@@ -48,5 +48,8 @@ public class Processo {
     public void setDataDeAbertura(Date dataDeAbertura) {
         this.dataDeAbertura = dataDeAbertura;
     }
+      public boolean ehNovo() {
+        return codigo == 0;
+    }
 
 }

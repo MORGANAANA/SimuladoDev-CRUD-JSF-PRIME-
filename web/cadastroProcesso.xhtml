@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="templates/padraoInterno.xhtml">        
+        <ui:define name="titulo">
+            Cadastro Processos
+        </ui:define>
+        <ui:define name="conteudo">
+            <p:growl id="mensagens"/>
+            <h:form id="formListaProcessos">
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton icon="ui-icon-plusthick" value="Novo Processo" update=":formEditarProcesso" actionListener="#{ProcessoBean.novoProcesso()}" oncomplete="PF('dlgEditarProcesso').show();"/>
+                    </f:facet>
+                </p:toolbar>
+
+                <p:dataTable id="tabListaProcesso" value="#{ProcessoBean.listaProcesso}" var="processo" paginator="true" rows="10">
+
+                    <p:column headerText="ID" sortBy="#{processo.codigo}" width="90">
+                        #{processo.codigo}                      
+                        <p:column headerText="Descrição" sortBy="#{processo.descricao}">
+                            #{processo.descricao}
+                        </p:column>
+                    </p:column>
+
+                    <p:column headerText="Data de Abertura" sortBy="#{processo.dataDeAbertura}">
+                        #{processo.dataDeAbertura}
+                    </p:column>
+
+                    <p:column width="135">
+                        <p:commandButton icon="ui-icon-pencil" update=":formEditarProcesso" actionListener="#{ProcessoBean.processo.codigo}" oncomplete="PF('dlgEditarProcesso').show();"/>
+                        <p:commandButton icon="ui-icon-trash" update="tabListaProcesso,:mensagens" actionListener="#{ProcessoBean.remover(processo)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+        <ui:define name="dialogs">
+            <p:dialog hideEffect="explode" header="EditarProcesso" modal="true" widgetVar="dlgEditarProcesso" resizable="false">
+                <h:form id="formEditarProcesso">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="txtDescricao" value=" Descrição: "/>
+                        <p:inputTextarea id="txtDescricao" label="Descrição" maxlength="100" value="#{ProcessoBean.processo.descricao}"required="true"/>
+
+                        <p:outputLabel for=txtdata" value="Data de Abertura: "/>
+                        <p:inputText id="txtxdata" label="Data de Abertura" maxlength="8" size="100" value=#{ProcessoBean.processo.dataDeAbertura} required="true"/>
+                        <p:inputMask id="txtxdata" label="Data de Abertura" value="#{ProcessoBean.processo.dataDeAbertura}" mask="99/99/9999" required="true"/>
+                    </h:panelGrid>
+                    <p:commandButton value="Salvar" update=":formLista:tabLista,:mensagens" action="#{ProcessoBean.salvar()} oncomplete="PF('dlgEditarProcesso').hide();"/>
+
+            </h:form>
+        </p:dialog>
+    </ui:define>
+</ui:composition>
+</html>
+
