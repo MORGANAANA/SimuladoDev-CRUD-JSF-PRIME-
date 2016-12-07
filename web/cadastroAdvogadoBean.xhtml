@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="templates/padraoInterno.xhtml">        
+        <ui:define name="titulo">
+            Cadastro Clientes
+        </ui:define>
+        <ui:define name="conteudo">
+            <p:growl id="mensagens"/>
+            <h:form id="formListaAdvogados">
+                <p:toolbar>
+                    <f:facet name="left">
+                        <p:commandButton icon="ui-icon-plusthick" value="Novo Advogado" update=":formEditarAdvogado" actionListener="#{AdvogadoBean.novoAdvogado()}" oncomplete="PF('dlgEditarAdvogado').show();"/>
+                    </f:facet>
+                </p:toolbar>
+                
+                <p:dataTable id="tabListaAdvogado" value="#{AdvogadoBean.listaAdvogado}" var="advogado" paginator="true" rows="10">
+                  
+                    <p:column headerText="ID" sortBy="#{advogado.codigo}" width="90">
+                        #{advogado.codigo}                      
+                        <p:column headerText="Nome " sortBy="#{advogado.nome}">
+                           #{advogado.nome}
+                        </p:column>
+                    </p:column>
+                    
+                    <p:column headerText="Registro OAB" sortBy="#{advogado.registroOAB}">
+                        #{advogado.registroOAB}
+                    </p:column>
+                   
+                    <p:column width="135">
+                        <p:commandButton icon="ui-icon-pencil" update=":formEditarAdvogado" actionListener="#{AdvogadoBean.advogado.codigo}" oncomplete="PF('dlgEditarAdvogado').show();"/>
+                        <p:commandButton icon="ui-icon-trash" update="tabListaAdvogado,:mensagens" actionListener="#{AdvogadoBean.remover(advogado)}"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </ui:define>
+        <ui:define name="dialogs">
+            <p:dialog hideEffect="explode" header="EditarAdvogado" modal="true" widgetVar="dlgEditarAdvogado" resizable="false">
+                <h:form id="formEditarAdvogado">
+                    <h:panelGrid columns="2">
+                        <p:outputLabel for="txtNome" value=" Nome: "/>
+                        <p:inputText id="txtNome" label="Nome" maxlength="100" size="60" value="#{AdvogadoBean.advogado.nome}"required="true"/>
+
+                        <p:outputLabel for=txtOAB" value="Registro OAB: "/>
+                        <p:inputText id="txtOAB" label="OAB" maxlength="8" size="100" value=#{clienteBean.cliente.cpf} required="true"/>
+                  
+                    </h:panelGrid>
+                    <p:commandButton value="Salvar" update=":formListaAdvogados:tabListaAdvogados,:mensagens" action="#{AdvogadoBean.salvar()} oncomplete="PF('dlgEditarAdvogado').hide();"/>
+                 
+                </h:form>
+            </p:dialog>
+        </ui:define>
+    </ui:composition>
+</html>
+

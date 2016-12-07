@@ -49,7 +49,12 @@ public class CadastroAdvogadoBean {
     public void setListaAdvogado(List<Advogado> listaAdvogado) {
         this.listaAdvogado = listaAdvogado;
     }
+    
+     public void novoAdvogado() {
+        advogado = new Advogado();
+    }
 
+    
  public String salvar() {
         boolean novo = advogado.ehNovo();
         dao.salvar(advogado);
