@@ -11,13 +11,15 @@
         <p:layout fullPage="true">
             <p:layoutUnit position="north" size="150">
                 <h1><ui:insert name="titulo"/></h1>
-                          </p:layoutUnit>
+            </p:layoutUnit>
             <p:layoutUnit position="west">
                 <h:form>
                     <p:menu>
-                        <p:menuitem ajax="false" value="Cliente" action="cadastroCliente"/>
-                        <p:menuitem ajax="false" value="Advogado" action="cadastroLivros"/>
-                        
+                        <p:menuitem ajax="false" value="Cadastrar Cliente" action="cadastroCliente"/>
+                        <p:menuitem ajax="false" value="Cadastrar Advogado" action="cadastroAdvogado"/>
+                        <p:menuitem ajax="false" value="Visualizar Processos" action="cadastroProcessos"/>
+                        <p:menuitem ajax="false" value="Associar Advogado a Processo" action="cadastroAdvogadoProcesso"/>
+
                     </p:menu>
                 </h:form>
             </p:layoutUnit>

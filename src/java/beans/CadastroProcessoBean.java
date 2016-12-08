@@ -2,28 +2,41 @@ package beans;
 
 import java.util.List;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import modelo.Processo;
+import persistencia.AdvogadoDAO;
+import persistencia.ClienteDAO;
 import persistencia.ProcessoDAO;
 import persistencia.SessaoHibernateUtil;
 
-@ManagedBean(name = "ProcessoBean")
+/**
+ *
+ * @author leonardo
+ */
+@ManagedBean
 @SessionScoped
 public class CadastroProcessoBean {
-
-    private Processo processo = new Processo();
+    private Processo processo;
+    private int idCliente;
+    private int codProcesso;
+    private String regAdvogado;
     private ProcessoDAO dao;
-    private List<Processo> listaProcesso;
+    private ClienteDAO clienteDAO;
+    private AdvogadoDAO advogadoDAO;
     
     public CadastroProcessoBean() {
         HttpSession sessaoHTTP = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         SessaoHibernateUtil controleSessaoHibernate = (SessaoHibernateUtil) sessaoHTTP.getAttribute("controleSessaoHibernate");
         dao = new ProcessoDAO(controleSessaoHibernate.getSession());
-        listaProcesso = dao.listar();
+        clienteDAO = new ClienteDAO(controleSessaoHibernate.getSession());
+        advogadoDAO = new AdvogadoDAO(controleSessaoHibernate.getSession());
+    }
+    
+    public List<Processo> getListaProcessos() {
+        return dao.listar();
     }
 
     public Processo getProcesso() {
@@ -34,52 +47,48 @@ public class CadastroProcessoBean {
         this.processo = processo;
     }
 
-    public ProcessoDAO getDao() {
-        return dao;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public void setDao(ProcessoDAO dao) {
-        this.dao = dao;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public List<Processo> getListaProcesso() {
-        return listaProcesso;
+    public int getCodProcesso() {
+        return codProcesso;
     }
-     public void novoProcesso() {
+
+    public void setCodProcesso(int codProcesso) {
+        this.codProcesso = codProcesso;
+    }
+
+    public String getRegAdvogado() {
+        return regAdvogado;
+    }
+
+    public void setRegAdvogado(String regAdvogado) {
+        this.regAdvogado = regAdvogado;
+    }
+    
+    public void novoProcesso() {
         processo = new Processo();
     }
-
-    public void setListaProcesso(List<Processo> ListaProcesso) {
-        this.listaProcesso = ListaProcesso;
-    }
-public String salvar() {
-        boolean novo = processo.ehNovo();
-        dao.salvar(processo);
-        if(novo) {
-            listaProcesso.add(processo);
-            processo = new Processo();
-            enviarMensagem(FacesMessage.SEVERITY_INFO, "Processo cadastrado com sucesso");
-            return null;
-        } else {
-            enviarMensagem(FacesMessage.SEVERITY_INFO, "Processo atualizado com sucesso");
-            return "pagina";
-        }
-        
+    
+    public void carregar(int codigo) {
+        processo = dao.carregar(codigo);
     }
     
-    public void carregar(int id) {
-        processo = dao.carregar(id);
+    public void salvar() {
+        processo.setCliente(clienteDAO.carregar(idCliente));
+        dao.incluir(processo);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Processo incluído com sucesso!", ""));
     }
     
-    public void remover(Processo processo) {
-        dao.remover(processo);
-        enviarMensagem(FacesMessage.SEVERITY_INFO, "processo removido com sucesso");
-        listaProcesso.remove(processo);
+    public void associarAdvogado() {
+        Processo p = dao.carregar(codProcesso);
+        p.adicionarAdvogado(advogadoDAO.consultarPorOAB(regAdvogado));
+        dao.alterar(p);
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Processo atualizado com sucesso!", ""));
     }
-    
-    private void enviarMensagem(Severity sev, String msg) {
-        FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(sev, msg, ""));
-    }
-    
 }

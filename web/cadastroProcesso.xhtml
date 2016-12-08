@@ -20,19 +20,26 @@
 
                 <p:dataTable id="tabListaProcesso" value="#{ProcessoBean.listaProcesso}" var="processo" paginator="true" rows="10">
 
-                    <p:column headerText="ID" sortBy="#{processo.codigo}" width="90">
-                        #{processo.codigo}                      
-                        <p:column headerText="Descrição" sortBy="#{processo.descricao}">
-                            #{processo.descricao}
-                        </p:column>
+                    <p:column headerText="ID"  width="90">
+                        #{processo.codigo}
+                    </p:column>
+
+                    <p:column headerText="Descrição">
+                        #{processo.descricao}
                     </p:column>
 
                     <p:column headerText="Data de Abertura" sortBy="#{processo.dataDeAbertura}">
-                        #{processo.dataDeAbertura}
+                        #{processo.dataDeAbertura}"                         
+                    </p:column>
+                    
+                    <p:column headerText="Cliente">
+                        #{processo.cliente.nome}"                         
                     </p:column>
 
+
                     <p:column width="135">
-                        <p:commandButton icon="ui-icon-pencil" update=":formEditarProcesso" actionListener="#{ProcessoBean.processo.codigo}" oncomplete="PF('dlgEditarProcesso').show();"/>
+                       <!--aBRIR A LISTA COM OS PROCESSOS, ISSO É feito pelo oncomplete-->
+                        <p:commandButton icon="ui-icon-search" update=":formEditarProcesso" actionListener="#{ProcessoBean.processo.codigo}" oncomplete="PF('dlgEditarProcesso').show();"/>
                         <p:commandButton icon="ui-icon-trash" update="tabListaProcesso,:mensagens" actionListener="#{ProcessoBean.remover(processo)}"/>
                     </p:column>
                 </p:dataTable>
@@ -46,8 +53,19 @@
                         <p:inputTextarea id="txtDescricao" label="Descrição" maxlength="100" value="#{ProcessoBean.processo.descricao}"required="true"/>
 
                         <p:outputLabel for=txtdata" value="Data de Abertura: "/>
-                        <p:inputText id="txtxdata" label="Data de Abertura" maxlength="8" size="100" value=#{ProcessoBean.processo.dataDeAbertura} required="true"/>
-                        <p:inputMask id="txtxdata" label="Data de Abertura" value="#{ProcessoBean.processo.dataDeAbertura}" mask="99/99/9999" required="true"/>
+                        <p:calendar id="caldata"  value="#{ProcessoBean.processo.dataDeAbertura}" required="true"/>
+                        
+                        <p:outputLabel for=txtcliente" value="Cliente do Processo: "/>
+                        <p:calendar id="txtCliente"  value="#{ProcessoBean.processo.cliente.nome}" required="true"/>
+                        
+                        <p:dataTable id="TabAdvogado" value="Advogados: "/>
+                        
+                       
+                        
+                        
+                        <!--ver a criação do lista cliente para pegar o ID 
+                        <p:outputLabel id="selLisCli" value="Clientes:"/>
+                        <p:selectOneMenu id="selLisCli" value="#{ProcessoBean.processo.Idcliente}">  -->
                     </h:panelGrid>
                     <p:commandButton value="Salvar" update=":formLista:tabLista,:mensagens" action="#{ProcessoBean.salvar()} oncomplete="PF('dlgEditarProcesso').hide();"/>
 

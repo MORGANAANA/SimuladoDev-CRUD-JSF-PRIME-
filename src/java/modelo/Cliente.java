@@ -5,9 +5,11 @@
  */
 package modelo;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -23,9 +25,17 @@ public class Cliente {
     @GeneratedValue
     private int codigo;
     private String nome;
-    private int cpf;
+    private String cpf;
     private int telefone;
     private String endereco;
+    
+    //Um cliente tem vários processos
+    //Então com o MappedBy, eu posso dizer que: Atravéz do Cliente eu acesso os processos
+    
+    @OneToMany (mappedBy = "cliente")
+    private List<Processo> processos;
+    
+    //Criar Getters e Setters
 
     public int getCodigo() {
         return codigo;
@@ -43,11 +53,11 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public int getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(int cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
@@ -66,7 +76,13 @@ public class Cliente {
     public void setEndereco(String endereco) {
         this.endereco = endereco;
     }
-    public boolean ehNovo() {
-        return codigo == 0;
+
+    public List<Processo> getProcessos() {
+        return processos;
     }
+
+    public void setProcessos(List<Processo> processos) {
+        this.processos = processos;
+    }
+    
 }

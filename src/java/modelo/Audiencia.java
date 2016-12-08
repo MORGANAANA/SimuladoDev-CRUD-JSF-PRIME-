@@ -1,33 +1,32 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
 
-/**
- *
- * @author 10070185
- */
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.print.attribute.standard.DateTimeAtCompleted;
 
 /**
  *
- * @author 10070185
+ * @author Morgana
  */
 @Entity
-@Table(name = "audiencia")
+@Table(name = "audiencias")
 public class Audiencia {
 
     @Id
     @GeneratedValue
     private int codigo;
-    private DateTimeAtCompleted dataHora;
+    private Date dataHora;
     private String local;
+
+    //Muitas audiencias podem ser do mesmo processo
+    //Juntei com a colula do CÓDIGO DO PROCESSO que se encontra na Classe processo
+    @ManyToOne
+    @JoinColumn(name = "codigo_processo")
+    private Processo processo;
 
     public int getCodigo() {
         return codigo;
@@ -37,11 +36,11 @@ public class Audiencia {
         this.codigo = codigo;
     }
 
-    public DateTimeAtCompleted getDataHora() {
+    public Date getDataHora() {
         return dataHora;
     }
 
-    public void setDataHora(DateTimeAtCompleted dataHora) {
+    public void setDataHora(Date dataHora) {
         this.dataHora = dataHora;
     }
 
@@ -51,6 +50,14 @@ public class Audiencia {
 
     public void setLocal(String local) {
         this.local = local;
+    }
+
+    public Processo getProcesso() {
+        return processo;
+    }
+
+    public void setProcesso(Processo processo) {
+        this.processo = processo;
     }
 
 }

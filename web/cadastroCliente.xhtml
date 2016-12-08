@@ -7,10 +7,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="templates/padraoInterno.xhtml">        
         <ui:define name="titulo">
-            Cadastro Clientes
+            Advogacia - Cadastro Clientes
         </ui:define>
+        
         <ui:define name="conteudo">
             <p:growl id="mensagens"/>
+            
             <h:form id="formListaClientes">
                 <p:toolbar>
                     <f:facet name="left">
@@ -38,22 +40,26 @@
                 </p:dataTable>
             </h:form>
         </ui:define>
+        
+        
        <ui:define name="dialogs">
             <p:dialog hideEffect="explode" header="EditarCliente" modal="true" widgetVar="dlgEditarCliente" resizable="false">
                 <h:form id="formEditarCliente">
                     <h:panelGrid columns="2">
-                        <p:outputLabel for="txtNome" value=" Nome: "/>
-                        <p:inputText id="txtNome" label="Nome" maxlength="100" size="60" value="#{clienteBean.cliente.nome}"required="true"/>
+                        <p:outputLabel for="txtNome" value=" Nome:"/>
+                        <p:inputText id="txtNome" label="Nome" maxlength="100" size="60" value="#{clienteBean.cliente.nome}" required="true"/>
 
-                        <p:outputLabel for=txtCPF" value="CPF: "/>
-                        <p:inputText id="txtCPF" label="CPF" maxlength="100" size="60" value=#{clienteBean.cliente.cpf} required="true"/>
+                        <p:outputLabel for="txtCPF" value="CPF: "/>
                         <p:inputMask id="txtCPF" label="CPF" value="#{clienteBean.cliente.cpf}" mask="999.999.999-99" required="true"/>
                        
-                        <p:outputLabel for=txtEndereco" value="Endereço: "/>
-                        <p:inputTextarea id="txtEndereco" label="Endereço" maxlength="500" value=#{clienteBean.cliente.endereco} required="true"/>
+                         <p:outputLabel for="txtTelefone" value="CPF: "/>
+                        <p:inputMask id="txtTelefone" label="CPF" value="#{clienteBean.cliente.cpf}" mask="999.999.999-99" required="true"/>
+                        
+                        <p:outputLabel for="txtEndereco" value="Endereço: "/>
+                        <p:inputTextarea id="txtEndereco" label="Endereço" maxlength="500" value="#{clienteBean.cliente.endereco}" required="true"/>
 
                     </h:panelGrid>
-                    <p:commandButton value="Salvar" update=":formListaClientes:tabListaClientes,:mensagens" action="#{clienteBean.salvar()} oncomplete="PF('dlgEditarAutor').hide();"/>
+                    <p:commandButton value="Salvar" update=":formListaClientes:tabListaClientes,:mensagens" actionListener="#{clienteBean.salvar()}" oncomplete="PF('dlgEditarAutor').hide();"/>
                  
                 </h:form>
             </p:dialog>
